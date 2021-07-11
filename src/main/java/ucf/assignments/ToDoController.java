@@ -1,24 +1,37 @@
 package ucf.assignments;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.function.Predicate;
 
 public class ToDoController
 {
-    @FXML private ListView myListView;
+    @FXML private ListView<Task> taskList;
 
-    // ObservableList is a List
-    protected ObservableList<String> list;
+    // ObservableList var and methods
+    private final ObservableList<Task> tasks = FXCollections.observableArrayList();
+    private final FilteredList<Task> filterTask = new FilteredList<>(tasks);
+
+    public void initialize() {
+        taskList.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldValue, newValue) -> {
+                    taskDescription.setText(newValue.getDescription());
+                    dateSetter.setValue(newValue.getDate());
+                    doneButton.setSelected(newValue.getCheck());
+                }
+        );
+}
 
     //GUI vars
     @FXML private TextField taskDescription;
@@ -32,36 +45,67 @@ public class ToDoController
     public void newTask(MouseEvent mouseEvent)
     {
         //Get current description from app
-            //If task with desc exists, add 1 to check
-            //If null, return and do not create
+        int checker = 0;
+        String taskDesc = taskDescription.getText();
+
+        //If null, return and do not create
+        if(taskDesc.isEmpty())
+            return;
         //Get selected date from app
-            //If task with date exists, add 1 check
-            //If null, return and do not create
-        //If check is 2
-            //return
+        LocalDate taskDate = dateSetter.getValue();
+        //If null, return and do not create
+        if(taskDate.toString().isEmpty())
+            return;
+
+        Task newTask = new Task(taskDate, taskDesc);
         //addItem(desc, date)
-        //Update viewer
+        tasks.add(newTask);
+        taskList.setItems(tasks);
+    }
+
+    @FXML
+    public void updateButtonPressed(ActionEvent actionEvent)
+    {
+        Task current = taskList.getSelectionModel().getSelectedItem();
+        current.setDescription(taskDescription.getText());
+        current.setDate(dateSetter.getValue());
+        current.setCheck(doneButton.isSelected());
+        taskList.refresh();
+    }
+
+    @FXML
+    public void removeTask(ActionEvent actionEvent)
+    {
+        Task toRemove = taskList.getSelectionModel().getSelectedItem();
+        tasks.remove(toRemove);
+    }
+
+    @FXML
+    public void clearList(ActionEvent actionEvent)
+    {
+        taskList.getItems().clear();
     }
 
     @FXML
     public void filterComplete(MouseEvent mouseEvent)
     {
-        //Send mode 1 to displayList
-        //Update viewer
+        taskList.setItems(filterTask);
+        Predicate<Task> isDone = i -> i.getCheck();
+        filterTask.setPredicate(isDone);
     }
 
     @FXML
     public void filterUncompleted(MouseEvent mouseEvent)
     {
-        //Send mode 2 to displayList
-        //Update viewer
+        taskList.setItems(filterTask);
+        Predicate<Task> isUndone = i -> !i.getCheck();
+        filterTask.setPredicate(isUndone);
     }
 
     @FXML
     public void showAll(MouseEvent mouseEvent)
     {
-        //Send mode 0 to displayList
-        //Update viewer
+        filterTask.setPredicate(null);
     }
 
     @FXML

@@ -1,26 +1,28 @@
 package ucf.assignments;
 
+import java.time.LocalDate;
+import java.time.chrono.Chronology;
 import java.util.Date;
 
 public class Task
 {
-    Date date;
+    LocalDate date;
     String description;
     Boolean check;
 
-    public Task(Date date, String description)
+    public Task(LocalDate date, String description)
     {
         this.date = date;
         this.description = description;
         this.check = false;
     }
 
-    public Date getDate()
+    public LocalDate getDate()
     {
         return date;
     }
 
-    public void setDate(Date date)
+    public void setDate(LocalDate date)
     {
         this.date = date;
     }
