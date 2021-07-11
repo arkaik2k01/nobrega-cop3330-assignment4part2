@@ -35,10 +35,10 @@
                         <TextField fx:id="taskDescription" layoutX="2.0" layoutY="14.0" prefHeight="30.0" prefWidth="149.0" promptText="Task Description...." />
                         <DatePicker fx:id="dateSetter" layoutX="2.0" layoutY="54.0" />
                         <CheckBox fx:id="doneButton" layoutX="2.0" layoutY="89.0" mnemonicParsing="false" text="Done" />
-                        <Button layoutX="3.0" layoutY="122.0" mnemonicParsing="false" onMouseClicked="#newTask" text="New..." />
-                        <Button layoutX="-3.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#filterComplete" text="Show done" />
-                        <Button layoutX="-1.0" layoutY="278.0" mnemonicParsing="false" onMouseClicked="#filterUncompleted" text="Show not done" />
-                        <Button layoutX="-3.0" layoutY="303.0" mnemonicParsing="false" onMouseClicked="#showAll" text="Show all" />
+                        <Button layoutX="3.0" layoutY="122.0" mnemonicParsing="false" onAction="#newTask" text="New..." />
+                        <Button layoutX="-3.0" layoutY="253.0" mnemonicParsing="false" onAction="#filterComplete" text="Show done" />
+                        <Button layoutX="-1.0" layoutY="278.0" mnemonicParsing="false" onAction="#filterUncompleted" text="Show not done" />
+                        <Button layoutX="-3.0" layoutY="303.0" mnemonicParsing="false" onAction="#showAll" text="Show all" />
                         <Button layoutX="110.0" layoutY="122.0" mnemonicParsing="false" onAction="#updateButtonPressed" text="Update" />
                         <Button layoutX="2.0" layoutY="147.0" mnemonicParsing="false" onAction="#removeTask" text="Remove..." />
                         <Button layoutX="2.0" layoutY="172.0" mnemonicParsing="false" onAction="#clearList" text="Clear..." />

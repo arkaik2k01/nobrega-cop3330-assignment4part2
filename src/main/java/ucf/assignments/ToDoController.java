@@ -1,7 +1,5 @@
 package ucf.assignments;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -11,17 +9,19 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
 public class ToDoController
 {
     @FXML private ListView<Task> taskList;
-
-    // ObservableList var and methods
+    // ListView utilities
     private final ObservableList<Task> tasks = FXCollections.observableArrayList();
     private final FilteredList<Task> filterTask = new FilteredList<>(tasks);
+    // FileChooser
+    FileChooser fileChooser = new FileChooser();
 
     public void initialize() {
         taskList.getSelectionModel().selectedItemProperty().addListener(
@@ -42,7 +42,7 @@ public class ToDoController
 
 
     @FXML
-    public void newTask(MouseEvent mouseEvent)
+    public void newTask(ActionEvent actionEvent)
     {
         //Get current description from app
         int checker = 0;
@@ -83,27 +83,28 @@ public class ToDoController
     @FXML
     public void clearList(ActionEvent actionEvent)
     {
+        taskList.setItems(tasks);
         taskList.getItems().clear();
     }
 
     @FXML
-    public void filterComplete(MouseEvent mouseEvent)
+    public void filterComplete(ActionEvent actionEvent)
     {
-        taskList.setItems(filterTask);
         Predicate<Task> isDone = i -> i.getCheck();
         filterTask.setPredicate(isDone);
+        taskList.setItems(filterTask);
     }
 
     @FXML
-    public void filterUncompleted(MouseEvent mouseEvent)
+    public void filterUncompleted(ActionEvent actionEvent)
     {
-        taskList.setItems(filterTask);
         Predicate<Task> isUndone = i -> !i.getCheck();
         filterTask.setPredicate(isUndone);
+        taskList.setItems(filterTask);
     }
 
     @FXML
-    public void showAll(MouseEvent mouseEvent)
+    public void showAll(ActionEvent actionEvent)
     {
         filterTask.setPredicate(null);
     }
