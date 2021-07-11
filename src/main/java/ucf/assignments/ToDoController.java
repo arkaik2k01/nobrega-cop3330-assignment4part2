@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -124,6 +126,7 @@ public class ToDoController
     {
         //Open dialog box
         //Get user location for list import
+        fileChooser.setTitle("Import tasks");
         File toReadFile = fileChooser.showOpenDialog(new Stage());
 
         try {
@@ -162,12 +165,22 @@ public class ToDoController
     @FXML
     public void exportList(ActionEvent actionEvent)
     {
-        //Open file writer
-        //Get list
+        fileChooser.setTitle("Save tasks");
+        File toSave = fileChooser.showSaveDialog(new Stage());
+        try {
+            printEachTaskToFile(toSave);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-        //For loop through toDoList
-            //toString() current element
-            //Print string to file
-        //close file writer
+    private void printEachTaskToFile(File toSave) throws IOException
+    {
+        FileWriter writer = new FileWriter(toSave);
+        for(Task task : tasks)
+        {
+            writer.write(task.toString());
+        }
+        writer.close();
     }
 }
