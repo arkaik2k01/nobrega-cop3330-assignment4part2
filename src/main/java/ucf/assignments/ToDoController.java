@@ -5,13 +5,19 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 import java.util.function.Predicate;
 
 public class ToDoController
@@ -23,7 +29,11 @@ public class ToDoController
     // FileChooser
     FileChooser fileChooser = new FileChooser();
 
+
     public void initialize() {
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text files", "*.txt"));
+        fileChooser.setInitialDirectory(new File("./src/main/resources/ucf/assignments"));
+
         taskList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldValue, newValue) -> {
                     taskDescription.setText(newValue.getDescription());
@@ -114,22 +124,44 @@ public class ToDoController
     {
         //Open dialog box
         //Get user location for list import
-        //Read first line as list title and create newList
+        File toReadFile = fileChooser.showOpenDialog(new Stage());
 
-        //Assuming (task description,date) format....
+        try {
+            //Clear current list
+            clearList(null);
+            Scanner in = new Scanner(toReadFile);
+            //While EOF
+            while(in.hasNextLine()) {
+                //Read strings by line
+                String input = in.nextLine();
 
-        //While EOF
-            //Read strings by line
-            //Separate into two string by comma
-            //Create Task with date and desc
-            //Add task to newList
-        //Update viewer
+                //Separate into two string by comma
+                //Assuming (task description,ISO local date) format....
+                String[] separated = separateInputByComma(input);
+
+                //Create Task with date and desc
+                Task newTask = new Task(LocalDate.parse(separated[1]), separated[0]);
+
+                //Add task to newList
+                tasks.add(newTask);
+            }
+            taskList.setItems(tasks);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String[] separateInputByComma(String input)
+    {
+        String[] separatedInput = new String[2];
+        separatedInput[0] = input.substring(0, input.indexOf(","));
+        separatedInput[1] = input.substring(input.indexOf(",")+1);
+        return separatedInput;
     }
 
     @FXML
     public void exportList(ActionEvent actionEvent)
     {
-        //Create file variable that will be stored in resources
         //Open file writer
         //Get list
 
