@@ -1,0 +1,43 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Task {
+    date
+    description
+    status
+
+    gets()
+    sets()
+    toString()
+}
+
+class ToDoList {
+    ArrayList<Task> todo
+    String title
+
+    addItem()
+    removeItem()
+    displayList(int)
+}
+
+class ToDo {
+    main()
+    start()
+}
+
+class ToDoController {
+    current : ToDoList
+    currentTask : Task
+    master : Map
+}
+
+class ToDoView {
+}
+
+ToDo--ToDoView
+ToDo--ToDoController
+ToDo--ToDoList
+ToDoList*--Task : at least 100 <
+javafx.Application<|---ToDo
+
+@enduml
