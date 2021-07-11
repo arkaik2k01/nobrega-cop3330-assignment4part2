@@ -11,33 +11,19 @@ class Task {
     toString()
 }
 
-class ToDoList {
-    ArrayList<Task> todo
-    String title
-
-    addItem()
-    removeItem()
-    displayList(int)
-}
-
 class ToDo {
     main()
     start()
 }
 
 class ToDoController {
-    current : ToDoList
-    currentTask : Task
-    master : Map
+    ListView<Task> : taskList
+    ObservableList : tasks
+    FilteredList : filterTasks
 }
 
-class ToDoView {
-}
-
-ToDo--ToDoView
-ToDo--ToDoController
-ToDo--ToDoList
-ToDoList*--Task : at least 100 <
+javafx.Application*--ToDoController
+ToDoController*--Task : at least 100 in tasks <
 javafx.Application<|---ToDo
 
 @enduml
