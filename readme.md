@@ -17,5 +17,6 @@ There are also many other functionalities in the ToDo App. You can view tasks by
 To read a list from a file...
     
     -Make sure that all input follows this format:
-        (task description),YYYY-MM-DD
+        task description,YYYY-MM-DD
+    -Where "task description" can be any one line text and "YYYY-MM-DD" is date in ISO Local format, for example 2021-07-12
     -BEWARE that reading in a list WILL overwrite your previous list
