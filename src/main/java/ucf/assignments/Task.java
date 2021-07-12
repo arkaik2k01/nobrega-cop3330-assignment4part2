@@ -49,6 +49,6 @@ public class Task
 
     public String toString()
     {
-        return description + ", due " + date.toString() + ((check) ? (". Done\n"):(". Not done\n"));
+        return description + ", due " + date.toString() + ((check) ? (". Done"):(". Not done"));
     }
 }
